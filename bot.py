@@ -55,25 +55,7 @@ async def spam(ctx, amount:int, *, message):
     for i in range(amount): # Do the next thing amount times
         await ctx.send(message) # Sends message where command was called
 
-@client.command()
-async def who(self,ctx,member: discord.Member):
 
-    roles = [role for role in member.roles]
-
-    embed = discord.Embed(color = member.color, timestamp=ctx.message.created_at)
-
-    embed.set_author(name=f"{member} User Info")
-    embed.set_thumbnail(url = member.avatar_url)
-    embed.set_footer(text = f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
-
-    embed.add_field(name="ID:", value=member.id)
-    embed.add_field(name="Server name:", value = member.display_name)
-    embed.add_field(name="Account creation date:", value=member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"))
-    embed.add_field(name="Join date:", value=member.joined_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"))
-    embed.add_field(name = f"Roles ({len(roles)})", value = "".join([role.mention for role in roles]))
-    embed.add_field(name = "Bot?", value = member.bot)
-
-    await ctx.send(embed=embed)
 
 token = ""
 with open ("token.txt") as file:
