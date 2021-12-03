@@ -17,7 +17,7 @@ async def ping(ctx):
     """Sends the latency"""
     await ctx.send(f' {round(client.latency * 1000)}ms')
 
-@commands.command()
+@client.command()
 async def echo(self, ctx, *, message=None):
     """
     A command that repeats the users input back to them.
@@ -25,6 +25,17 @@ async def echo(self, ctx, *, message=None):
     message = message or "Please provide the message to be repeated."
     await ctx.message.delete()
     await ctx.send(message)
+
+@client.command()
+async def avatar(ctx, member: discord.Member = None):
+    if member == None:
+        member = ctx.author
+    memberAvatar = member.avatar_url
+
+    avatarEmbed = discord.Embed(title=f"{member.name}'s Avatar")
+    avatarEmbed.set_image(url = memberAvatar)
+
+    await ctx.send(embed = avatarEmbed)
 
 @client.command(aliases=['8ball'])
 async def _8bal1(ctx, *, question):
@@ -55,7 +66,9 @@ async def spam(ctx, amount:int, *, message):
     for i in range(amount): # Do the next thing amount times
         await ctx.send(message) # Sends message where command was called
 
-
+@client.command()
+async def clear(ctx, amount=5):
+    await ctx.channel.purge(limit=amount)
 
 token = ""
 with open ("token.txt") as file:
