@@ -18,24 +18,24 @@ async def ping(ctx):
     await ctx.send(f' {round(client.latency * 1000)}ms')
 
 @client.command()
-async def echo(self, ctx, *, message=None):
+async def echo(ctx, *, message=None):
     """
-    A command that repeats the users input back to them.
+    Repeats the users input back to them.
     """
-    message = message or "Please provide the message to be repeated."
+    message = message or "No message provided."
     await ctx.message.delete()
     await ctx.send(message)
 
 @client.command()
 async def avatar(ctx, member: discord.Member = None):
     if member == None:
-        member = ctx.author
-    memberAvatar = member.avatar_url
+        member = ctx.author # if the member isn't given, get the avatar of the person who used the command
+    memberAv = member.avatar_url
 
-    avatarEmbed = discord.Embed(title=f"{member.name}'s Avatar")
-    avatarEmbed.set_image(url = memberAvatar)
+    avEmbed = discord.Embed(title=f"{member.name}'s Avatar")
+    avEmbed.set_image(url = memberAv)
 
-    await ctx.send(embed = avatarEmbed)
+    await ctx.send(embed = avEmbed)
 
 @client.command(aliases=['8ball'])
 async def _8bal1(ctx, *, question):
@@ -61,10 +61,15 @@ async def _8bal1(ctx, *, question):
                 "Very doubtful."]
     await ctx.send(f'Question: {question}\nAnswer: {random.choice(responses)}')
 
-@client.command(name='spam', help='Spams the input message for x number of times')
+@client.command(name='spam')
 async def spam(ctx, amount:int, *, message):
-    for i in range(amount): # Do the next thing amount times
-        await ctx.send(message) # Sends message where command was called
+    """Spams the message x amount of times"""
+    for i in range(amount): # Do the next thing x amount of times
+        await ctx.send(message) # Sends the message where the command was called
+@spam.error
+async def spam_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument): # if there's no message provided
+        await ctx.send("Please provide a message.") # send this
 
 @client.command()
 async def clear(ctx, amount=5):
