@@ -26,16 +26,7 @@ async def echo(ctx, *, message=None):
     await ctx.message.delete()
     await ctx.send(message)
 
-@client.command()
-async def avatar(ctx, member: discord.Member = None):
-    if member == None:
-        member = ctx.author # if the member isn't given, get the avatar of the person who used the command
-    memberAv = member.avatar_url
 
-    avEmbed = discord.Embed(title=f"{member.name}'s Avatar")
-    avEmbed.set_image(url = memberAv)
-
-    await ctx.send(embed = avEmbed)
 
 @client.command(aliases=['8ball'])
 async def _8bal1(ctx, *, question):
